@@ -1,6 +1,8 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+    id 'maven-publish'
 }
+
 group 'tk.rdvdev2.kottleplugin'
 version '1.0'
 
@@ -15,3 +17,45 @@ dependencies {
     implementation group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
 }
 
+publishing {
+    publications {
+        KottlePlugin(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
+
+            from components.java
+            pom {
+                name = "Kottle Plugin"
+                description = "A GradlePlugin that works alongside ForgeGradle to make life easier to Kotlin Forge mods"
+                licenses {
+                    license {
+                        name = "The GNU General Public License, Version 3.0"
+                        url = "https://www.gnu.org/licenses/gpl-3.0.en.html"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "rdvdev2"
+                        name = "Roger Diaz"
+                        email = "rdvdev2@gmail.com"
+                    }
+                }
+                scm {
+                    connection = "scm:git:git://github.com/rdvdev2/KottlePlugin.git"
+                    developerConnection = "scm:git:ssh://github.com/rdvdev2/KottlePlugin.git"
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "github"
+            url = "https://maven.pkg.github.com/rdvdev2"
+            credentials {
+                username = "${project.properties.mavenUsername}"
+                password = "${project.properties.mavenPassword}"
+            }
+        }
+    }
+}
